@@ -1,5 +1,6 @@
 from typing import Any
 from django.shortcuts import render
+from rest_framework.response import Response
 from django.views.generic.base import TemplateView
 from .models import Post
 from django.views.generic import (
@@ -10,6 +11,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from rest_framework.decorators import api_view
 # Create your views here.
 def BlogView(request):
     return render(request,"blog.html")
@@ -33,5 +35,7 @@ class PostList(ListView):
     # def get_queryset(self):
     #     posts = Post.objects.filter(status=True)
     #     return posts
-    
+@api_view()    
+def api_post_list_view(request):
+    return Response("ok")
     
