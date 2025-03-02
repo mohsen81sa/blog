@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from ...models import Post,Category
 from blog.api.v1.permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 
 """ fbv api """
@@ -92,6 +93,10 @@ class PostListViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=1)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category', 'author']
+
+
     
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
