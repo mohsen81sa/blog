@@ -9,6 +9,9 @@ from ...models import Post,Category
 from blog.api.v1.permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
+from .paginations import DefaultPagination
+from rest_framework.filters import SearchFilter, OrderingFilter
+
 
 """ fbv api """
 # @api_view(["GET","POST"])
@@ -93,9 +96,11 @@ class PostListViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=1)
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,SearchFilter, OrderingFilter]
+    search_fields = ["title", "content"]
     filterset_fields = ['category', 'author']
-
+    ordering_fields = ["published_date"]
+    pagination_class = DefaultPagination
 
     
 class CategoryViewSet(viewsets.ModelViewSet):
